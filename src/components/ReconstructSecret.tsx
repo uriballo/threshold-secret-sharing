@@ -1,8 +1,28 @@
-import { Button, Container, TextField, Typography } from "@mui/material";
+import { Button, Container, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
+import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
+import { useState } from "react";
 
 export default function ReconstructSecret() {
+    const [nInputs, setNInputs] = useState<Number>();
+    const [inputs, setInputs] = useState<Number[]>([]);
+    const [pieces, setPieces] = useState<string[]>([]);
+    const [secret, setSecret] = useState<string>();
+
+    const createInputs = () => {
+        console.log(nInputs)
+        if (nInputs !== undefined) {
+            let array = new Array<Number>(nInputs)
+            for (let index = 0; index < array.length; index++) {
+                array[index] = index + 1;
+
+            }
+            setInputs(array);
+        }
+
+    }
+
 
     return (
         <Box
@@ -27,7 +47,7 @@ export default function ReconstructSecret() {
                         gutterBottom
                         variant="body2"
                     >
-                        Input the secret pieces.
+                        Input the number of pieces.
                     </Typography>
                     <Typography
                         color="textSecondary"
@@ -37,30 +57,9 @@ export default function ReconstructSecret() {
                         (the secret will be reconstructed corrected iff the threshold is reached)
                     </Typography>
                 </Box>
-
-                <TextField
-                    fullWidth
-                    label='Secret'
-                    margin='normal'
-                    variant='outlined'
-                //  onChange={(e) => setSecret(e.target.value)}
-                />
                 <TextField
                     fullWidth
                     label='Pieces'
-                    margin='normal'
-                    type='number'
-                    variant='outlined'
-                    InputProps={{
-                        inputProps: {
-                            max: 10, min: 0
-                        }
-                    }}
-                //  onChange={(e) => setPieces(Number(e.target.value))}
-                />
-                <TextField
-                    fullWidth
-                    label='Threshold'
                     margin='normal'
                     type='number'
                     InputProps={{
@@ -68,8 +67,7 @@ export default function ReconstructSecret() {
                             max: 10, min: 2
                         }
                     }}
-                    variant='outlined'
-                //  onChange={(e) => setThreshold(Number(e.target.value))}
+                    onChange={(e) => setNInputs(Number(e.target.value))}
                 />
 
                 <Box sx={{ py: 2 }}>
@@ -77,13 +75,34 @@ export default function ReconstructSecret() {
                         color="inherit"
                         fullWidth
                         size="large"
-                        //  onClick={splitSecret}
+                        onClick={createInputs}
                         variant="outlined"
-                        endIcon={<EngineeringOutlinedIcon />}
+                        endIcon={<AddBoxOutlinedIcon />}
                     >
-                        Build
+
                     </Button>
                 </Box>
+                {inputs && inputs.map(item =>
+                    <TextField
+                        fullWidth
+                        label={'Piece #' + item}
+                        margin='normal'
+                        onChange={(e) => setPieces([...pieces, e.target.value])}>
+                    </TextField>)}
+                {inputs &&
+                    <Box sx={{ py: 2 }}>
+                        <Button
+                            color="inherit"
+                            fullWidth
+                            size="large"
+                            //  onClick={splitSecret}
+                            variant="outlined"
+                            endIcon={<EngineeringOutlinedIcon />}
+                        >
+                            Build
+                        </Button>
+                    </Box>
+                }
                 <Typography
                     color="textSecondary"
                     variant="body2"

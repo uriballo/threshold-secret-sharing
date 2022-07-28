@@ -1,7 +1,8 @@
-import { Box, Button, Container, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
+import { Box, Button, Container, TextField, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from '@mui/material'
 import ContentCutSharpIcon from '@mui/icons-material/ContentCutSharp';
 import { useState } from 'react';
 import * as secrets from 'secrets.js-34r7h';
+import { ContentCopy } from '@mui/icons-material';
 
 export default function SplitSecret() {
     const [secret, setSecret] = useState<string>();
@@ -19,10 +20,15 @@ export default function SplitSecret() {
             const varShares = secrets.share(secretHex, pieces, threshold, 1024);
             setShares(varShares);
             const comb = secrets.combine(shares!);
+            console.log(varShares)
             alert(secrets.hex2str(comb));
         } else {
             alert('Some input is missing')
         }
+    }
+
+    const clipText = async (text: string) => {
+        await navigator.clipboard.writeText(text);
     }
 
     return (
@@ -111,6 +117,22 @@ export default function SplitSecret() {
                 >
                     Click the toggle at the top to switch modes.
                 </Typography>
+                <br></br>
+
+                {shares && shares.map(item =>
+                    <div>
+                        <Tooltip title={'Click to copy!'} onClick={() => clipText(item)} >
+                            <Typography
+                                noWrap
+                                color="textSecondary"
+                                variant="body2"
+                                key={Math.random()}>
+                                • {item}
+                            </Typography>
+                        </Tooltip>
+                    </div>
+                )}
+                <br></br>
             </Container>
         </Box>
     );
