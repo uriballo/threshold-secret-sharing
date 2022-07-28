@@ -2,7 +2,6 @@ import { Box, Button, Container, TextField, ToggleButton, ToggleButtonGroup, Too
 import ContentCutSharpIcon from '@mui/icons-material/ContentCutSharp';
 import { useState } from 'react';
 import * as secrets from 'secrets.js-34r7h';
-import { ContentCopy } from '@mui/icons-material';
 
 export default function SplitSecret() {
     const [secret, setSecret] = useState<string>();
@@ -11,17 +10,10 @@ export default function SplitSecret() {
     const [shares, setShares] = useState<secrets.Shares>();
 
     const splitSecret = () => {
-        alert(secret);
-        alert(pieces);
-        alert(threshold);
-
         if (secret !== undefined && pieces !== undefined && threshold !== undefined) {
             const secretHex = secrets.str2hex(secret);
             const varShares = secrets.share(secretHex, pieces, threshold, 1024);
             setShares(varShares);
-            const comb = secrets.combine(shares!);
-            console.log(varShares)
-            alert(secrets.hex2str(comb));
         } else {
             alert('Some input is missing')
         }

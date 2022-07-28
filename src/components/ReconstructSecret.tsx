@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
 import { useState } from "react";
+import * as secrets from 'secrets.js-34r7h';
 
 export default function ReconstructSecret() {
     const [nInputs, setNInputs] = useState<Number>();
@@ -13,6 +14,7 @@ export default function ReconstructSecret() {
     const createInputs = () => {
         console.log(nInputs)
         if (nInputs !== undefined) {
+            // meh
             let array = new Array<Number>(nInputs)
             for (let index = 0; index < array.length; index++) {
                 array[index] = index + 1;
@@ -20,7 +22,14 @@ export default function ReconstructSecret() {
             }
             setInputs(array);
         }
+    }
 
+    const constructSecret = () => {
+        const pcs = pieces.filter((item): item is string => !!item);
+
+        const combination = secrets.combine(pcs);
+
+        alert(secrets.hex2str(combination));
     }
 
 
@@ -58,6 +67,7 @@ export default function ReconstructSecret() {
                     </Typography>
                 </Box>
                 <TextField
+                    id='kek'
                     fullWidth
                     label='Pieces'
                     margin='normal'
@@ -84,10 +94,18 @@ export default function ReconstructSecret() {
                 </Box>
                 {inputs && inputs.map(item =>
                     <TextField
+                        //key={Math.random()}
                         fullWidth
+                        //type='text'
                         label={'Piece #' + item}
                         margin='normal'
-                        onChange={(e) => setPieces([...pieces, e.target.value])}>
+                        onBlur={(e) => {
+                            setPieces((prev) => {
+                                const updated = [...prev];
+                                updated[item.valueOf()] = e.target.value;
+                                return updated;
+                            })
+                        }}>
                     </TextField>)}
                 {inputs &&
                     <Box sx={{ py: 2 }}>
@@ -95,7 +113,7 @@ export default function ReconstructSecret() {
                             color="inherit"
                             fullWidth
                             size="large"
-                            //  onClick={splitSecret}
+                            onClick={constructSecret}
                             variant="outlined"
                             endIcon={<EngineeringOutlinedIcon />}
                         >
