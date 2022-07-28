@@ -1,24 +1,31 @@
-import React from 'react';
-import logo from './logo.svg';
+import SplitSecret from './components/SplitSecret';
 import './App.css';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import React, { useState } from 'react';
+import ReconstructSecret from './components/ReconstructSecret';
 
 function App() {
+  const [mode, setMode] = useState('split');
+
+  const handleChange = (event: React.MouseEvent<HTMLElement>, newMode: string) => {
+    setMode(newMode);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ToggleButtonGroup sx={{ my: 3 }}
+        color="primary"
+        value={mode}
+        exclusive
+        onChange={handleChange}
+      >
+        <ToggleButton value="split">Split</ToggleButton>
+        <ToggleButton value="build">Build</ToggleButton>
+      </ToggleButtonGroup>
+      {mode === 'split'
+        ? <SplitSecret />
+        : <ReconstructSecret />}
+
     </div>
   );
 }
