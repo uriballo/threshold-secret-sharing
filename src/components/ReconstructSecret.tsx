@@ -63,7 +63,7 @@ export default function ReconstructSecret() {
                         gutterBottom
                         variant="body2"
                     >
-                        (the secret will be reconstructed corrected iff the threshold is reached)
+                        (the secret will be reconstructed correctly iff the threshold is reached)
                     </Typography>
                 </Box>
                 <TextField
