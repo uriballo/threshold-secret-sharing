@@ -1,4 +1,4 @@
-import { Button, Container, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Alert, Button, Container, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import EngineeringOutlinedIcon from '@mui/icons-material/EngineeringOutlined';
 import AddBoxOutlinedIcon from '@mui/icons-material/AddBoxOutlined';
@@ -9,7 +9,8 @@ export default function ReconstructSecret() {
     const [nInputs, setNInputs] = useState<Number>();
     const [inputs, setInputs] = useState<Number[]>([]);
     const [pieces, setPieces] = useState<string[]>([]);
-    const [secret, setSecret] = useState<string>();
+    const [secret, setSecret] = useState<Boolean>();
+    const [construct, setConstruct] = useState<String>();
 
     const createInputs = () => {
         console.log(nInputs)
@@ -29,9 +30,13 @@ export default function ReconstructSecret() {
 
         const combination = secrets.combine(pcs);
 
-        alert(secrets.hex2str(combination));
+        setSecret(true);
+        setConstruct(secrets.hex2str(combination))
     }
 
+    const closeNoti = () => {
+        setSecret(false);
+    }
 
     return (
         <Box
@@ -127,6 +132,9 @@ export default function ReconstructSecret() {
                 >
                     Click the toggle at the top to switch modes.
                 </Typography>
+                <br />
+                {secret &&
+                    <Alert severity="info" onClose={closeNoti}>Reconstructed Secret: {construct}</Alert>}
             </Container>
         </Box>
     );
