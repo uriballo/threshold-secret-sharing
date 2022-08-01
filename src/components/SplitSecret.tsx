@@ -1,4 +1,4 @@
-import { Box, Button, Container, TextField, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Container, TextField, Tooltip, Typography } from '@mui/material'
 import ContentCutSharpIcon from '@mui/icons-material/ContentCutSharp';
 import { useState } from 'react';
 import * as secrets from 'secrets.js-34r7h';
@@ -21,6 +21,17 @@ export default function SplitSecret() {
 
     const clipText = async (text: string) => {
         await navigator.clipboard.writeText(text);
+    }
+
+    const downloadPieces = () => {
+        if (shares !== undefined) {
+            const piecesFile = new File([shares.join("\n\n")], 'pieces.txt', { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(piecesFile);
+            link.download = "pieces.txt";
+            document.body.appendChild(link);
+            link.click();
+        }
     }
 
     return (
@@ -113,7 +124,7 @@ export default function SplitSecret() {
 
                 {shares && shares.map(item =>
                     <div>
-                        <Tooltip title={'Click to copy!'} onClick={() => clipText(item)} >
+                        <Tooltip title={'Click to download all pieces!'} onClick={() => downloadPieces()} >
                             <Typography
                                 noWrap
                                 color="textSecondary"
