@@ -4,10 +4,14 @@ Implementation of the [STSS](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sha
 
 The app has two *modes*: split and build. The former is used to split a secret (text) into pieces and the former for reconstructing the secret.
 
-TODO: Improve UX by downloading pieces in .txt and improving the reconstructed secret UI.
-
 ## Split Mode
-...
+Splits the secret in shares using the following parameters:
+* Secret: `string` to 'encrypt'.
+* Pieces: number of shares to create.
+* Threshold: number of pieces required to reconstruct the secret, [2, numPieces-1].
 
 ## Build Mode
-...
+Combines shares to construct the secret (will be correct iff the threshold is reached).
+* Pieces: number of shares used as input.
+* Button 1: create fields to input shares.
+* Button 2: reconstruct secret from shares.
