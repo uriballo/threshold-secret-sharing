@@ -4,11 +4,30 @@ import { useState } from 'react';
 import * as secrets from 'secrets.js-34r7h';
 
 export default function SplitSecret() {
+    /**
+     * Holds the secret to split.
+     */
     const [secret, setSecret] = useState<string>();
+
+    /**
+     * Holds the number of pieces to be created.
+     */
     const [pieces, setPieces] = useState<number>();
+
+    /**
+     * Holds the treshold of pieces to recreate the secret.
+     */
     const [threshold, setThreshold] = useState<number>();
+
+    /**
+     * Holds the created secret's pieces aka the shares.
+     */
     const [shares, setShares] = useState<secrets.Shares>();
 
+    /**
+     * Using the secret, pieces and threshold splits the secret and stores the pieces
+     * in the state variables 'shares'.
+     */
     const splitSecret = () => {
         if (secret !== undefined && pieces !== undefined && threshold !== undefined) {
             const secretHex = secrets.str2hex(secret);
@@ -19,10 +38,9 @@ export default function SplitSecret() {
         }
     }
 
-    const clipText = async (text: string) => {
-        await navigator.clipboard.writeText(text);
-    }
-
+    /**
+     * Creates a file named 'pieces.txt' with the shares of the secret and downloads it.
+     */
     const downloadPieces = () => {
         if (shares !== undefined) {
             const piecesFile = new File([shares.join("\n\n")], 'pieces.txt', { type: 'text/plain' });

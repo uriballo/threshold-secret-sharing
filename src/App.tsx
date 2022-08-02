@@ -5,8 +5,14 @@ import React, { useState } from 'react';
 import ReconstructSecret from './components/ReconstructSecret';
 
 function App() {
+  /**
+   * Controls the selected mode, ['split','build'].
+   */
   const [mode, setMode] = useState('split');
 
+  /**
+   * Changes the selected mode to newMode.
+   */
   const handleChange = (event: React.MouseEvent<HTMLElement>, newMode: string) => {
     setMode(newMode);
   }
